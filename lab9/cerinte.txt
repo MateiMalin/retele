@@ -1,0 +1,13 @@
+faceti un server tcp care sa faca boradcast cate toti clientii mesajului primit de la fiecare client
+proiectul va fi de tip concurent
+rezultate in urma implementarii
+documentul ar trebui sa fie in jur de 6 pagini
+prima parte cam o pagina
+implementare server, client, canalul de comunicare, sa se poata conecta
+mai multi clienti
+functionalitati de baza, adica un schelet
+client, conexiunea
+pentru interfata: prototip de server
+punem aplicatia pe serverul facultatii
+folosim wire shark ca sa monitorizam serverul
+user , parola si fisier de configurare
