@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "name": "Bulevardul Central (Spine)",
+        "lat_min": 0.0,
+        "lat_max": 100.0,
+        "lon_min": 45.0,
+        "lon_max": 55.0,
+        "speed_limit": 60
+    },
+    {
+        "id": 2,
+        "name": "Strada Nordului (Top Cross)",
+        "lat_min": 90.0,
+        "lat_max": 95.0,
+        "lon_min": 0.0,
+        "lon_max": 100.0,
+        "speed_limit": 50
+    },
+    {
+        "id": 3,
+        "name": "Strada Sudului (Base)",
+        "lat_min": 0.0,
+        "lat_max": 10.0,
+        "lon_min": 0.0,
+        "lon_max": 100.0,
+        "speed_limit": 50
+    },
+    {
+        "id": 4,
+        "name": "Strada Vestica (Stanga Mijloc)",
+        "lat_min": 40.0,
+        "lat_max": 45.0,
+        "lon_min": 0.0,
+        "lon_max": 45.0,
+        "speed_limit": 40
+    },
+    {
+        "id": 5,
+        "name": "Strada Estica Superioara (Dreapta Sus)",
+        "lat_min": 70.0,
+        "lat_max": 75.0,
+        "lon_min": 55.0,
+        "lon_max": 100.0,
+        "speed_limit": 40
+    },
+    {
+        "id": 6,
+        "name": "Strada Estica Inferioara (Dreapta Jos)",
+        "lat_min": 25.0,
+        "lat_max": 30.0,
+        "lon_min": 55.0,
+        "lon_max": 90.0,
+        "speed_limit": 30
+    },
+    {
+        "id": 7,
+        "name": "Aleea Laterala (Stanga Vertical)",
+        "lat_min": 15.0,
+        "lat_max": 85.0,
+        "lon_min": 10.0,
+        "lon_max": 15.0,
+        "speed_limit": 30
+    },
+    {
+        "id": 8,
+        "name": "Zona Industriala (Bloc Dreapta)",
+        "lat_min": 20.0,
+        "lat_max": 40.0,
+        "lon_min": 85.0,
+        "lon_max": 95.0,
+        "speed_limit": 40
+    },
+    {
+        "id": 9,
+        "name": "Pasaj Suprateran (Diagonal Logic)",
+        "lat_min": 50.0,
+        "lat_max": 55.0,
+        "lon_min": 20.0,
+        "lon_max": 45.0,
+        "speed_limit": 70
+    },
+    {
+        "id": 10,
+        "name": "Parcare Centrala (Zona sigura)",
+        "lat_min": 45.0,
+        "lat_max": 55.0,
+        "lon_min": 60.0,
+        "lon_max": 75.0,
+        "speed_limit": 50
+    }
+]
