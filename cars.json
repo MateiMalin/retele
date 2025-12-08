@@ -1,0 +1,23 @@
+[
+  {
+    "id": "IS-64-RXD",
+    "lat": 91.7000,
+    "lng": 51.7000,
+    "speed": 51.7,
+    "street": "Bulevardul Central (Spine)"
+  },
+  {
+    "id": "IS-49-VIS",
+    "lat": 91.5000,
+    "lng": 51.5000,
+    "speed": 51.5,
+    "street": "Bulevardul Central (Spine)"
+  },
+  {
+    "id": "VS-99-MIS",
+    "lat": 91.1000,
+    "lng": 51.1000,
+    "speed": 51.1,
+    "street": "Bulevardul Central (Spine)"
+  }
+]

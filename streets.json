@@ -87,6 +87,60 @@
         "lat_max": 55.0,
         "lon_min": 60.0,
         "lon_max": 75.0,
+        "speed_limit": 10
+    },
+    {
+        "id": 11,
+        "name": "Zona Vestica Verticala (lon 0-10, lat 10-100)",
+        "lat_min": 10.0,
+        "lat_max": 100.0,
+        "lon_min": 0.0,
+        "lon_max": 10.0,
+        "speed_limit": 60
+    },
+    {
+        "id": 12,
+        "name": "Zona NE Compacta (lat 80-100, lon 80-100)",
+        "lat_min": 80.0,
+        "lat_max": 100.0,
+        "lon_min": 80.0,
+        "lon_max": 100.0,
+        "speed_limit": 55
+    },
+    {
+        "id": 13,
+        "name": "Zona Estica Mare (lat 50-70, lon 80-100)",
+        "lat_min": 50.0,
+        "lat_max": 70.0,
+        "lon_min": 80.0,
+        "lon_max": 100.0,
         "speed_limit": 50
+    },
+    {
+        "id": 14,
+        "name": "Zona Mijloc Dreapta (lat 40-50, lon 60-80)",
+        "lat_min": 40.0,
+        "lat_max": 50.0,
+        "lon_min": 60.0,
+        "lon_max": 80.0,
+        "speed_limit": 70
+    },
+    {
+        "id": 15,
+        "name": "Strada Sud-Vest",
+        "lat_min": 10.0,
+        "lat_max": 30.0,
+        "lon_min": 10.0,
+        "lon_max": 30.0,
+        "speed_limit": 35
+    },
+    {
+        "id": 16,
+        "name": "Strada Centru-Nord",
+        "lat_min": 60.0,
+        "lat_max": 80.0,
+        "lon_min": 30.0,
+        "lon_max": 55.0,
+        "speed_limit": 45
     }
 ]

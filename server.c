@@ -11,11 +11,13 @@
 #include <time.h>
 
 #define PORT 2728
+#define BUFFER_SIZE 1024
 #define MAX_CLIENTS 100
 
 extern int errno;
 
 pthread_mutex_t data_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t log_lock = PTHREAD_MUTEX_INITIALIZER;
 
 int max_long = -2e9;
 int max_lat = -2e9;
@@ -30,6 +32,102 @@ struct client_info
     char street_name[64]; // nume strada
     int speed;            // the speed
 } clients[MAX_CLIENTS];
+
+// functie ca sa scriu in json toate comenzile apelate, un history la tot ce se intampla
+void log_event(const char *json_string)
+{
+    pthread_mutex_lock(&log_lock);
+
+    FILE *f = fopen("server_log.json", "r+");
+
+    if (!f)
+    {
+        f = fopen("server_log.json", "w");
+        if (f)
+        {
+            fprintf(f, "[\n%s\n]", json_string);
+            fclose(f);
+        }
+    }
+    else
+    {
+        fseek(f, 0, SEEK_END);
+        long size = ftell(f);
+
+        if (size > 0)
+        {
+            long pos = size - 1;
+            int found_end_bracket = 0;
+
+            while (pos > 0)
+            {
+                fseek(f, pos, SEEK_SET);
+                char c = fgetc(f);
+                if (c == '}')
+                {
+                    found_end_bracket = 1;
+                    break;
+                }
+                pos--;
+            }
+
+            if (found_end_bracket)
+            {
+                fseek(f, pos + 1, SEEK_SET);
+                fprintf(f, ",\n%s\n]", json_string);
+            }
+            else
+            {
+                fprintf(f, "%s\n]", json_string);
+            }
+        }
+        else
+        {
+            fprintf(f, "[\n%s\n]", json_string);
+        }
+        fclose(f);
+    }
+
+    pthread_mutex_unlock(&log_lock);
+}
+
+void save_car_data()
+{
+    FILE *f = fopen("cars.json", "w");
+    if (!f)
+        return;
+
+    pthread_mutex_lock(&data_lock);
+    fprintf(f, "[\n");
+
+    int first = 1;
+
+    for (int i = 0; i < MAX_CLIENTS; i++)
+    {
+        if (clients[i].active)
+        {
+            if (!first)
+            {
+                fprintf(f, ",\n");
+            }
+            fprintf(f, "  {\n");
+            fprintf(f, "    \"id\": \"%s\",\n", clients[i].id);
+            fprintf(f, "    \"lat\": %.4f,\n", clients[i].lat);
+            fprintf(f, "    \"lng\": %.4f,\n", clients[i].lng);
+            fprintf(f, "    \"speed\": %.1f,\n", clients[i].speed);
+            fprintf(f, "    \"street\": \"%s\"\n", clients[i].street_name);
+            fprintf(f, "  }");
+
+            first = 0;
+        }
+    }
+
+    fprintf(f, "\n]\n");
+
+    fclose(f);
+
+    pthread_mutex_unlock(&data_lock);
+}
 
 typedef struct
 {
@@ -121,8 +219,8 @@ void *client_thread(void *arg)
     int fd = *((int *)arg);
     free(arg);
 
-    char buffer[1024];
-    char response[1024];
+    char buffer[BUFFER_SIZE];
+    char response[BUFFER_SIZE];
 
     while (1)
     {
@@ -142,6 +240,8 @@ void *client_thread(void *arg)
 
             clients[fd].active = 0;
             pthread_mutex_unlock(&data_lock);
+
+            save_car_data();
 
             close(fd);
             break;
@@ -169,6 +269,13 @@ void *client_thread(void *arg)
                 pthread_mutex_unlock(&data_lock);
 
                 printf("[CONNECT] S-a conectat un client nou: %s (socket fd: %d)\n", id, fd);
+
+                save_car_data();
+
+                char log_buf[BUFFER_SIZE];
+                snprintf(log_buf, sizeof(log_buf), "{\"event\":\"CONNECT\", \"id\":\"%s\", \"ts\":%ld}", id, time(NULL));
+                log_event(log_buf);
+
                 snprintf(response, sizeof(response), "{\"status\":\"OK\", \"msg\":\"Welcome %s\"}\n", id);
                 write(fd, response, strlen(response));
             }
@@ -292,10 +399,24 @@ void *client_thread(void *arg)
             }
 
             pthread_mutex_unlock(&data_lock);
+
+            char log_buf[BUFFER_SIZE];
+            snprintf(log_buf, sizeof(log_buf),
+                     "{\"event\":\"TELEMETRY\", \"id\":\"%s\", \"lat\":%.4f, \"lng\":%.4f, \"speed\":%d, \"ts\":%ld}",
+                     clients[fd].id, temp_lat, temp_long, temp_speed, (long)time(NULL));
+            log_event(log_buf);
+
+            save_car_data();
         }
         else if (strstr(buffer, "REPORT"))
         {
             printf("[REPORT] Clientul %s raporteaza: accident\n", clients[fd].id);
+
+            char log_buf[BUFFER_SIZE];
+            snprintf(log_buf, sizeof(log_buf),
+                     "{\"event\":\"REPORT\", \"type\":\"ACCIDENT\", \"reporter\":\"%s\", \"ts\":%ld}",
+                     clients[fd].id, time(NULL));
+            log_event(log_buf);
 
             int street_idx = find_street_index(clients[fd].lat, clients[fd].lng);
 
@@ -437,7 +558,6 @@ int main()
         }
         else
         {
-            // Detasam thread-ul ca sa isi elibereze singur resursele la final
             pthread_detach(tid);
         }
     }
