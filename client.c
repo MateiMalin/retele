@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
         FD_SET(0, &readfds);  // Monitorizam Tastatura (stdin)
         FD_SET(sd, &readfds); // Monitorizam Serverul (socket)
 
-        tv.tv_sec = 5;
+        tv.tv_sec = 10;
         tv.tv_usec = 0;
 
         ret = select(sd + 1, &readfds, NULL, NULL, &tv);
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
                 break;
             }
 
-            if (strstr(buffer, "ALERT") && strstr(buffer, "Viteza prea mare"))
+            if (strstr(buffer, "ALERT") && strstr(buffer, "depasit"))
             {
                 int new_limit = 0;
 

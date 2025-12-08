@@ -192,6 +192,9 @@ void *client_thread(void *arg)
             printf("[SUBSCRIBE] Clientul cu id-ul: %s s-a abonat\n", clients[fd].id);
             snprintf(response, sizeof(response), "{\"status\":\"OK\", \"msg\":\"Subscribed\"}\n");
             write(fd, response, strlen(response));
+
+            snprintf(response, sizeof(response), "Vreme: Prognoză azi, Iași: 10°C, Noros, șanse de ploaie ușoară la ora 16:00.\n Sport: Fotbal: FC BOTOSANI a învins Steaua cu scorul de 3-1. Mâine, meciul de baschet dintre Steaua și Dinamo la ora 20:00.\n Combustibili: Preț Mediu Benzină (azi): 7.25 RON/L. Cea mai mică variație înregistrată la stația Rompetrol (+0.02 RON).");
+            write(fd, response, strlen(response));
         }
         else if (strstr(buffer, "TELEMETRY"))
         {
@@ -277,8 +280,8 @@ void *client_thread(void *arg)
                 if (clients[fd].speed > city_map[street_index].current_speed_limit)
                 {
                     alert_speed(street_index, city_map[street_index].current_speed_limit, 3, fd);
-                    snprintf(response, sizeof(response), "{\"cmd\":\"ALERT\", \"msg\":\"Viteza prea mare! Limita este %d km/h\"}\n", city_map[street_index].current_speed_limit);
-                    write(fd, response, strlen(response));
+                    // snprintf(response, sizeof(response), "{\"cmd\":\"ALERT\", \"msg\":\"Viteza prea mare! Limita este %d km/h\"}\n", city_map[street_index].current_speed_limit);
+                    // write(fd, response, strlen(response));
                 }
             }
             else
