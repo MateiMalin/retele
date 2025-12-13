@@ -10,7 +10,7 @@
 #include <pthread.h>
 #include <time.h>
 
-#define PORT 2728
+#define PORT 51273
 #define BUFFER_SIZE 1024
 #define MAX_CLIENTS 100
 
@@ -21,7 +21,7 @@ pthread_mutex_t log_lock = PTHREAD_MUTEX_INITIALIZER;
 
 int max_long = -2e9;
 int max_lat = -2e9;
-// struct for the car info
+
 struct client_info
 {
     char id[32];
@@ -102,7 +102,8 @@ void save_car_data()
 
     int first = 1;
 
-    for (int i = 0; i < MAX_CLIENTS; i++)
+    int i;
+    for (i = 0; i < MAX_CLIENTS; i++)
     {
         if (clients[i].active)
         {
@@ -153,7 +154,8 @@ int map_size = 100;
 // masina nu se afla pe o strada
 int find_street_index(float lat, float lng)
 {
-    for (int i = 0; i < map_size; i++)
+    int i;
+    for (i = 0; i < map_size; i++)
     {
         if (city_map[i].id == 0)
             continue;
@@ -196,8 +198,9 @@ void alert_speed(int s_index, int new_speed_limit, int alert_case, int sender_fd
 
         snprintf(alert_msg, sizeof(alert_msg), "{\"cmd\":\"ALERT\", \"type\":\"CRITIC\", \"msg\":\"%s pe %s. Noua limita: %d km/h\"}\n", reason, s_name, new_speed_limit);
 
-        // ii lueam pe toti la rand
-        for (int fd = 0; fd < MAX_CLIENTS; fd++)
+        // ii lueam pe toti la rand, care sunt pe aceeasi strada
+        int fd;
+        for (fd = 0; fd < MAX_CLIENTS; fd++)
         {
             if (clients[fd].active)
                 if (strcmp(clients[fd].street_name, s_name) == 0)
@@ -213,7 +216,6 @@ void alert_speed(int s_index, int new_speed_limit, int alert_case, int sender_fd
     }
 }
 
-// Functia Thread-ului (Inlocuieste handle_client)
 void *client_thread(void *arg)
 {
     int fd = *((int *)arg);
@@ -224,14 +226,13 @@ void *client_thread(void *arg)
 
     while (1)
     {
-        // read este blocant in thread-uri, ceea ce e ok
         int bytes = read(fd, buffer, sizeof(buffer) - 1);
 
         if (bytes <= 0)
         {
+            // daca ne deconectam de la server
             printf("Clientul cu fd : %d s-a deconectat\n", fd);
 
-            // Protejam stergerea din lista globala
             pthread_mutex_lock(&data_lock);
 
             int old_street = find_street_index(clients[fd].lat, clients[fd].lng);
@@ -257,7 +258,7 @@ void *client_thread(void *arg)
                 char id[32];
                 sscanf(ptr + 6, "%[^\"]", id);
 
-                // Protejam scrierea datelor noului client
+                // protejam scrierea datelor noului client
                 pthread_mutex_lock(&data_lock);
                 strcpy(clients[fd].id, id);
                 clients[fd].active = 1;
@@ -346,10 +347,7 @@ void *client_thread(void *arg)
                 strcpy(clients[fd].street_name, city_map[street_index].name);
 
                 if (street_index != old_index)
-                {
-                    // inseamna ca am schimbat strada pe care ne aflam
                     city_map[street_index].car_count++;
-                }
 
                 snprintf(response, sizeof(response),
                          "Va aflati pe strada: %s , conduceti cu %d km/h iar limita de viteza este de: %d\n",
@@ -371,8 +369,6 @@ void *client_thread(void *arg)
                     city_map[street_index].current_speed_limit = 30;
 
                     alert_speed(street_index, 30, 2, fd);
-                    // snprintf(response, sizeof(response), "{\"cmd\":\"ALERT\", \"msg\":\"Trafic RIDICAT pe %s! Limita 30km/h\"}", city_map[street_index].name);
-                    // write(fd, response, strlen(response));
                 }
                 else if (city_map[street_index].car_count > 3)
                 {
@@ -380,15 +376,11 @@ void *client_thread(void *arg)
                     city_map[street_index].current_speed_limit = 40;
 
                     alert_speed(street_index, 40, 2, fd);
-                    // snprintf(response, sizeof(response), "{\"cmd\":\"ALERT\", \"msg\":\"Trafic MEDIU pe %s! Limita 40km/h\"}", city_map[street_index].name);
-                    // write(fd, response, strlen(response));
                 }
 
                 if (clients[fd].speed > city_map[street_index].current_speed_limit)
                 {
                     alert_speed(street_index, city_map[street_index].current_speed_limit, 3, fd);
-                    // snprintf(response, sizeof(response), "{\"cmd\":\"ALERT\", \"msg\":\"Viteza prea mare! Limita este %d km/h\"}\n", city_map[street_index].current_speed_limit);
-                    // write(fd, response, strlen(response));
                 }
             }
             else
@@ -422,12 +414,10 @@ void *client_thread(void *arg)
 
             if (street_idx != -1)
             {
-                // Setam accidentul protejat
                 pthread_mutex_lock(&data_lock);
                 city_map[street_idx].has_accident = 1;
                 pthread_mutex_unlock(&data_lock);
 
-                // Alert speed are propriul lock intern, deci e safe sa il apelam fara lock aici
                 alert_speed(street_idx, 10, 1, fd);
 
                 snprintf(response, sizeof(response), "{\"status\":\"RECEIVED\", \"msg\":\"Raport accident inregistrat pe %s. Multumim!\"}\n", city_map[street_idx].name);
@@ -502,7 +492,6 @@ int main()
     int optval = 1;
     socklen_t len = sizeof(from);
 
-    // Initializare
     memset(clients, 0, sizeof(clients));
 
     if ((sd = socket(AF_INET, SOCK_STREAM, 0)) == -1)

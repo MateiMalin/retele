@@ -39,7 +39,6 @@ int main(int argc, char *argv[])
     fd_set readfds;
     struct timeval tv;
     int ret;
-    /* exista toate argumentele in linia de comanda? */
     if (argc != 4)
     {
         printf("[client] Sintaxa: %s <adresa_server> <port> <id-masina>\n", argv[0]);
@@ -73,7 +72,6 @@ int main(int argc, char *argv[])
     snprintf(buffer, sizeof(buffer), "{\"cmd\":\"CONNECT\", \"id\":\"%s\"}", my_id);
     write(sd, buffer, strlen(buffer));
 
-    // --- INTERFATA UTILIZATOR (Simulata in Terminal) ---
     printf("\n=================================================\n");
     printf("   TRAFFIC MONITOR CLIENT - %s\n", my_id);
     printf("=================================================\n");

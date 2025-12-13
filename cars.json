@@ -1,3 +1,9 @@
 [
-
+  {
+    "id": "IS-64-RXD",
+    "lat": 90.5000,
+    "lng": 50.5000,
+    "speed": 50.5,
+    "street": "Bulevardul Central (Spine)"
+  }
 ]
