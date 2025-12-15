@@ -13,6 +13,9 @@
 
 #define BUFFER_SIZE 1024
 
+#define STEP_LAT 0.009  // aprox pt Latitudine
+#define STEP_LONG 0.013 // aprox pt Longitudine (Iași)
+
 extern int errno;
 
 int port;
@@ -21,6 +24,17 @@ float current_lat = 0.0;
 float current_long = 0.0;
 int current_speed = 0;
 int is_initialized = 0;
+
+int current_axis = 0;
+int current_direction = 1;
+
+float step_lat = 0.0;
+float step_long = 0.0;
+
+float prev_lat = 0.0;
+float prev_long = 0.0;
+
+const float telemtry_interval_seconds = 10.0;
 
 void show_prompt()
 {
@@ -92,7 +106,7 @@ int main(int argc, char *argv[])
         FD_SET(0, &readfds);  // Monitorizam Tastatura (stdin)
         FD_SET(sd, &readfds); // Monitorizam Serverul (socket)
 
-        tv.tv_sec = 10;
+        tv.tv_sec = (long)telemtry_interval_seconds;
         tv.tv_usec = 0;
 
         ret = select(sd + 1, &readfds, NULL, NULL, &tv);
@@ -109,15 +123,29 @@ int main(int argc, char *argv[])
             // inseamna ca au trecut alea 60 de secunde si trebuie sa trimit telemetry din nou
             if (is_initialized)
             {
-                current_speed += (rand() % 5) - 2;
-                if (current_speed < 0)
-                    current_speed = 0;
-                current_lat += 0.1;
-                current_long += 0.1;
+                // back up   in caz ca am iesit de pe harta
+                prev_lat = current_lat;
+                prev_long = current_long;
+
+                // calculam distanta ca viteza * timp
+                // 10 secunde = 0.0027 ore
+                float dist_km = current_speed * 0.00277;
+
+                // selectam pe ce axa sa miscam
+                if (current_axis == 0)
+                {
+                    current_lat += dist_km * STEP_LAT * current_direction;
+                }
+                else
+                {
+                    current_long += dist_km * STEP_LONG * current_direction;
+                }
 
                 snprintf(buffer, sizeof(buffer), "{\"cmd\":\"TELEMETRY\", \"lat\":\"%.4f\", \"long\":\"%.4f\", \"speed\":\"%d\", \"id\":\"%s\"}", current_lat, current_long, current_speed, my_id);
 
                 write(sd, buffer, strlen(buffer));
+
+                printf("[AUTO] Moving... Lat: %.4f Long: %.4f (Axa: %d, Dir: %d)\n", current_lat, current_long, current_axis, current_direction);
             }
             continue;
         }
@@ -134,6 +162,36 @@ int main(int argc, char *argv[])
             {
                 printf("\n[SISTEM] Serverul s-a inchis. Iesire...\n");
                 break;
+            }
+
+            if (strstr(buffer, "\axis\":"))
+            {
+                int new_axis = -1;
+                char *p = strstr(buffer, "\"axis\":");
+                sscanf(p + 7, "%d", &new_axis);
+
+                if (new_axis != -1 && new_axis != current_axis)
+                {
+                    current_axis = new_axis;
+                    printf("[GPS] Am intrat pe o strada noua! Schimb directia de mers pe axa %d.\n", current_axis);
+                }
+
+                char *msg = strstr(buffer, "\"msg\":\"");
+                if (msg)
+                {
+                    char text[100];
+                    sscanf(msg + 7, "%[^\"]", text);
+                    printf("[SERVER] %s\n", text);
+                }
+            }
+            else if (strstr(buffer, "UNKOWN") || strstr(buffer, "Uknown"))
+            {
+                printf("[Alerta] Am ajuns la capatul strazii! Ma intorc...\n");
+
+                current_lat = prev_lat;
+                current_long = prev_long;
+
+                current_direction = current_direction * -1;
             }
 
             if (strstr(buffer, "ALERT") && strstr(buffer, "depasit"))
@@ -177,6 +235,27 @@ int main(int argc, char *argv[])
                 if (sscanf(input_buffer, "set %f %f %d", &current_lat, &current_long, &current_speed) == 3)
                 {
                     is_initialized = 1;
+
+                    // logica ca sa ne miscam
+                    // resetam step-urile
+                    step_lat = 0.0;
+                    step_long = 0.0;
+
+                    // setam timpul de la telemetry in ore
+                    // calculam cat o s-o deplasat in timpul ala
+                    float time_in_hours = telemtry_interval_seconds / 3600.0;
+                    float distance_step = current_speed * time_in_hours;
+                    // ca sa stim daca ne miscam pe ox sau pe oy
+                    int axis = rand() % 2;
+
+                    // aici o sa alegem sensul daca o sa fie pozitiv sau negativ
+                    int direction = rand() % 2;
+
+                    float sign;
+                    if (direction == 1)
+                        sign = 1;
+                    else
+                        sign = 0;
 
                     printf("[CLIENT] Locatie setata. Pornire telemetrie...\n");
 

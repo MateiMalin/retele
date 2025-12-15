@@ -10,7 +10,7 @@
 #include <pthread.h>
 #include <time.h>
 
-#define PORT 51273
+#define PORT 2728
 #define BUFFER_SIZE 1024
 #define MAX_CLIENTS 100
 
@@ -346,8 +346,25 @@ void *client_thread(void *arg)
             {
                 strcpy(clients[fd].street_name, city_map[street_index].name);
 
+                // calculam inaltimea si lungimea strazii
+                float inaltime = city_map[street_index].lat_max - city_map[street_index].lat_min;
+                float latime = city_map[street_index].long_max - city_map[street_index].long_min;
+
+                // vedem unde e mai viable sa mergem, pe lat sau long
+                // 0 -> nord/sud    1->est/vest
+                int recc_axis;
+                if (inaltime > latime)
+                    recc_axis = 0;
+                else
+                    recc_axis = 1;
+
+                // trebuie sa trimitem un mesaj nou catre client ca sa il anuntam in ce directie sa o ia
+                snprintf(response, sizeof(response), "{\"cmd\":\"INFO\", \"street\":\"%s\", \"limit\":%d, \"axis\":%d, \"msg\":\"Va aflati pe %s\"}\n", city_map[street_index].name, city_map[street_index].current_speed_limit, recc_axis, city_map[street_index].name);
+                write(fd, response, strlen(response));
+
                 if (street_index != old_index)
-                    city_map[street_index].car_count++;
+                    city_map[street_index]
+                        .car_count++;
 
                 snprintf(response, sizeof(response),
                          "Va aflati pe strada: %s , conduceti cu %d km/h iar limita de viteza este de: %d\n",
