@@ -14,7 +14,7 @@
 #define BUFFER_SIZE 1024
 
 #define STEP_LAT 0.5
-#define STEP_LONG 0.5 
+#define STEP_LONG 0.5
 
 extern int errno;
 

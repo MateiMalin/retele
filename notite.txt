@@ -20,3 +20,11 @@ Ideas:
 Today : make the skeleton, the structs , without functions working for both the server and the client
 
 ar trebui sa primesc instant mesaj cand ma conectez cu un client la server despre locatie si limita de viteza
+
+pentru informatii: nu cred ca ar trebui sa modific ceva, sincer
+
+ce functii concurente cunosti
+daca clientul are port
+diferente intre tcp si udp
+diferente iso/oxi - tcp/ip
+nr de nivele 

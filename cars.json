@@ -1,3 +1,9 @@
 [
-
+  {
+    "id": "IS-49-VIS",
+    "lat": 60.6528,
+    "lng": 89.0000,
+    "speed": 89.0,
+    "street": "Est Vertical"
+  }
 ]
