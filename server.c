@@ -10,6 +10,8 @@
 #include <pthread.h>
 #include <time.h>
 
+#include <signal.h> // <--- Adauga asta sus de tot la include-uri
+
 #define PORT 2728
 #define BUFFER_SIZE 1024
 #define MAX_CLIENTS 100
@@ -205,55 +207,10 @@ void broadcast_accident_event(int s_index)
     printf("[BROADCAST] Accident pe %s anuntat la toti clientii.\n", s_name);
 }
 
-// functie care sa alerteze masinile daca trebuie sa reduca viteza
-void alert_speed(int s_index, int new_speed_limit, int alert_case, int sender_fd)
-{
-    char alert_msg[512];
-    char s_name[63];
-
-    if (s_index != -1)
-    {
-        strcpy(s_name, city_map[s_index].name);
-    }
-    else
-    {
-        strcpy(s_name, "Strada nu exista");
-    }
-
-    if (alert_case == 1 || alert_case == 2)
-    {
-        // s-a petrecut accident pe strada cu s_index sau e trafic
-        if (s_index != -1)
-            city_map[s_index].current_speed_limit = new_speed_limit;
-
-        char *reason;
-        if (alert_case == 1)
-            reason = "ACCIDENT GRAV";
-        else
-            reason = "TRAFIC CRESCUT";
-
-        snprintf(alert_msg, sizeof(alert_msg), "{\"cmd\":\"ALERT\", \"type\":\"CRITIC\", \"msg\":\"%s pe %s. Noua limita: %d km/h\"}\n", reason, s_name, new_speed_limit);
-
-        // ii lueam pe toti la rand, care sunt pe aceeasi strada
-        int fd;
-        for (fd = 0; fd < MAX_CLIENTS; fd++)
-        {
-            if (clients[fd].active)
-                if (strcmp(clients[fd].street_name, s_name) == 0)
-                    write(fd, alert_msg, strlen(alert_msg));
-        }
-    }
-    else if (alert_case == 3)
-    {
-        // doar conduce cu prea multa viteza
-        snprintf(alert_msg, sizeof(alert_msg), "{\"cmd\":\"ALERT\", \"type\":\"WARNING\", \"msg\":\"Atentie %s! Ati depasit limita de %d km/h!\"}\n",
-                 clients[sender_fd].id, new_speed_limit);
-        write(sender_fd, alert_msg, strlen(alert_msg));
-    }
-}
-
 void *client_thread(void *arg)
 {
+    // arg e un pointer la void, ii spun sa il tratez ca un pointer la int, * la *
+    // o sa imi dea valoarea lui
     int fd = *((int *)arg);
     free(arg);
 
@@ -495,7 +452,6 @@ void *client_thread(void *arg)
                 city_map[street_idx].current_speed_limit = 10;
                 pthread_mutex_unlock(&data_lock);
 
-                // alert_speed(street_idx, 10, 1, fd);
                 broadcast_accident_event(street_idx);
 
                 snprintf(response, sizeof(response), "{\"status\":\"RECEIVED\", \"msg\":\"Raport accident inregistrat pe %s. Multumim!\"}\n", city_map[street_idx].name);
@@ -563,6 +519,7 @@ void load_map_from_json()
 
 int main()
 {
+    signal(SIGPIPE, SIG_IGN);
     load_map_from_json();
     struct sockaddr_in server;
     struct sockaddr_in from;
@@ -574,12 +531,15 @@ int main()
 
     // aici ar trebui sa resetez fisierul cu masini in prealabil
     save_car_data();
+
     if ((sd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     {
         perror("[server] Eroare la creare socket");
         return errno;
     }
 
+    // sol socket e nivelul de setari, ca sa pot refolosi adresa locala
+    // optval e doar un switch on and off
     setsockopt(sd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
     memset(&server, 0, sizeof(server));
 
@@ -587,6 +547,7 @@ int main()
     server.sin_port = htons(PORT);
     server.sin_addr.s_addr = htonl(INADDR_ANY);
 
+    // adauga adresa la sd
     if (bind(sd, (struct sockaddr *)&server, sizeof(struct sockaddr)) == -1)
     {
         perror("[server] Eroare la bind");
@@ -614,11 +575,12 @@ int main()
 
         printf("[server] Client nou conectat: %d. Lansez thread...\n", client_sock);
 
-        // thread safety,alocam pe heap memorie
+        // thread safety,alocam pe heap memorie 4bytes mai exact
         int *new_sock = malloc(sizeof(int));
         *new_sock = client_sock;
 
         pthread_t tid;
+        // client_thread e functia care da start la rutina
         if (pthread_create(&tid, NULL, client_thread, (void *)new_sock) < 0)
         {
             perror("Eroare la creare thread");
@@ -627,6 +589,7 @@ int main()
         }
         else
         {
+            // once it finishes, it gets detached
             pthread_detach(tid);
         }
     }

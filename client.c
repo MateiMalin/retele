@@ -129,9 +129,9 @@ int main(int argc, char *argv[])
                 prev_long = current_long;
 
                 // calculam distanta ca viteza * timp
-                // 10 secunde = 0.0027 ore
                 float time_hours = telemtry_interval_seconds / 3600.0;
-                float dist_km = current_speed * time_hours;
+                float multiplier = 50; // for example purposes
+                float dist_km = current_speed * multiplier * time_hours;
 
                 // selectam pe ce axa sa miscam
                 if (current_axis == 0)
@@ -189,7 +189,7 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    strcpy(new_street_name, "Unknown");
+                    strcpy(new_street_name, "UNKOWN");
                 }
 
                 if (strcmp(new_street_name, current_street_name) != 0 && strcmp(new_street_name, "Unkown") != 0)
