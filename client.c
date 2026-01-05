@@ -25,6 +25,8 @@ float current_long = 0.0;
 int current_speed = 0;
 int is_initialized = 0;
 
+char current_street_name[64] = "Unknown";
+
 int current_axis = 0;      // axa pe care ma aflu
 int current_direction = 1; // directia , spre plus sau minus
 
@@ -55,13 +57,14 @@ int main(int argc, char *argv[])
     int ret;
     if (argc != 4)
     {
-        printf("[client] Sintaxa: %s <adresa_server> <port> <id-masina>\n", argv[0]);
+        printf("[CLIENT] Sintaxa: %s <adresa_server> <port> <id-masina>\n", argv[0]);
         return -1;
     }
 
     /* stabilim portul */
     port = atoi(argv[2]);
     strcpy(my_id, argv[3]);
+    // cream seed-ul random dupa ora
     srand(time(NULL));
 
     /* cream socketul */
@@ -76,6 +79,7 @@ int main(int argc, char *argv[])
     server.sin_port = htons(port);
 
     /* ne conectam la server */
+    // ne conectam prin sd si facem handshake tcp
     if (connect(sd, (struct sockaddr *)&server, sizeof(struct sockaddr)) == -1)
     {
         perror("[client]Eroare la connect().\n");
@@ -86,25 +90,20 @@ int main(int argc, char *argv[])
     snprintf(buffer, sizeof(buffer), "{\"cmd\":\"CONNECT\", \"id\":\"%s\"}", my_id);
     write(sd, buffer, strlen(buffer));
 
-    printf("\n=================================================\n");
     printf("   TRAFFIC MONITOR CLIENT - %s\n", my_id);
-    printf("=================================================\n");
     printf("1. Initializare:  set <lat> <long> <viteza>\n");
     printf("   Exemplu:       set 47.16 27.58 60\n");
     printf("2. Raportare:     report\n");
     printf("3. Abonare:       sub / unsub\n");
     printf("4. Iesire:        exit\n");
-    printf("=================================================\n");
-    printf("Nota: Dupa 'set', datele se trimit automat la fiecare 5 secunde.\n\n");
 
     show_prompt();
 
-    // accept doar accepta o conexiune cand esti conectat cu un file descriptor
     while (1)
     {
         FD_ZERO(&readfds);
-        FD_SET(0, &readfds);  // Monitorizam Tastatura (stdin)
-        FD_SET(sd, &readfds); // Monitorizam Serverul (socket)
+        FD_SET(0, &readfds);  // monitorizam tastatura (stdin)
+        FD_SET(sd, &readfds); // monitorizam serverul (socket)
 
         tv.tv_sec = (long)telemtry_interval_seconds;
         tv.tv_usec = 0;
@@ -119,8 +118,6 @@ int main(int argc, char *argv[])
             perror("Eroare la select");
             break;
         }
-
-        // inseamna ca nu s-a intamplat nimic pe fd-urile tale in intervalul de timp
 
         if (ret == 0)
         {
@@ -146,11 +143,12 @@ int main(int argc, char *argv[])
                     current_long += dist_km * STEP_LONG * current_direction;
                 }
 
+                // ii trimit telemetry din nou
                 snprintf(buffer, sizeof(buffer), "{\"cmd\":\"TELEMETRY\", \"lat\":\"%.4f\", \"long\":\"%.4f\", \"speed\":\"%d\", \"id\":\"%s\"}", current_lat, current_long, current_speed, my_id);
 
                 write(sd, buffer, strlen(buffer));
 
-                printf("[AUTO] Moving... Lat: %.4f Long: %.4f (Axa: %d, Dir: %d)\n", current_lat, current_long, current_axis, current_direction);
+                printf("[AUTO] Moving... Lat: %.4f Long: %.4f \n", current_lat, current_long);
             }
             continue;
         }
@@ -175,23 +173,59 @@ int main(int argc, char *argv[])
                 char *p = strstr(buffer, "\"axis\":");
                 sscanf(p + 7, "%d", &new_axis);
 
-                // daca noua axa exista si e diferita de aia veche, inseamna ca strada noua
-                if (new_axis != -1 && new_axis != current_axis)
+                int server_limit = 0;
+                char *p_limit = strstr(buffer, "\"limit\":");
+                if (p_limit)
                 {
-                    current_axis = new_axis;
-                    printf("[GPS] Am intrat pe o strada noua! Schimb directia de mers pe axa %d.\n", current_axis);
+                    sscanf(p_limit + 8, "%d", &server_limit);
+                }
+
+                // vedem daca strada pe care intram este noua sau nu
+                char new_street_name[64];
+                char *p_street = strstr(buffer, "\"street\":\"");
+                if (p_street)
+                {
+                    sscanf(p_street + 10, "%[^\"]", new_street_name);
+                }
+                else
+                {
+                    strcpy(new_street_name, "Unknown");
+                }
+
+                if (strcmp(new_street_name, current_street_name) != 0 && strcmp(new_street_name, "Unkown") != 0)
+                {
+                    // inseamna ca am intrat pe o strada noua
+                    if (new_axis != current_axis && new_axis != -1)
+                    {
+                        // inseamna ca am schimbat directia
+                        printf("[GPS] Viraj detecat, schimbat directia de mers..\n");
+                    }
+                    else
+                    {
+                        printf("[GPS] Continuam pe directia inainte..\n");
+                    }
+
+                    // actualizam numele strazii
+                    strcpy(current_street_name, new_street_name);
+                }
+
+                if (server_limit > 0 && current_speed > server_limit)
+                {
+                    printf("\n[AUTO-PILOT] Limita de %d km/h detectata! Franez automat de la %d km/h.\n", server_limit, current_speed);
+                    current_speed = server_limit;
                 }
 
                 char *msg = strstr(buffer, "\"msg\":\"");
                 if (msg)
                 {
-                    char text[100];
+                    char text[256];
                     sscanf(msg + 7, "%[^\"]", text);
-                    printf("[SERVER] %s\n", text);
+                    printf("[INFO] %s\n", text);
                 }
             }
             else if (strstr(buffer, "UNKNOWN") || strstr(buffer, "Unknown"))
             {
+                // logica sa ma intorc pe strada de unde am plecat
                 printf("[Alerta] Am ajuns la capatul strazii! Ma intorc...\n");
 
                 current_lat = prev_lat;
@@ -201,12 +235,14 @@ int main(int argc, char *argv[])
             }
             else if (strstr(buffer, "ALERT") && strstr(buffer, "depasit"))
             {
+                // asta merge doar daca am intrat pe strada aia ???
+                // nu merge, auto pilotul nu imi spune ca am depsait viteza, cred
                 int new_limit = 0;
 
-                char *p = strstr(buffer, "limita de");
+                char *p = strstr(buffer, "limit:");
                 if (p)
                 {
-                    sscanf(p + 10, "%d", &new_limit);
+                    sscanf(p + 7, "%d", &new_limit);
 
                     if (new_limit > 0 && current_speed > new_limit)
                     {
@@ -244,10 +280,40 @@ int main(int argc, char *argv[])
                     prev_lat = current_lat;
                     prev_long = current_long;
 
-                    printf("[CLIENT] Locatie setata. Pornire telemetrie...\n");
+                    int fluctuation = (rand() % 5) - 2;
 
+                    current_speed += fluctuation;
+
+                    if (current_speed < 0)
+                        current_speed = 0;
+                    if (current_speed > 200)
+                        current_speed = 200;
+                    printf("[CLIENT] Locatie setata. Sincronizare cu serverul...\n");
+
+                    // daca am comanda set, o sa ii trimit un telemetry
                     snprintf(buffer, sizeof(buffer), "{\"cmd\":\"TELEMETRY\", \"lat\":\"%.4f\", \"long\":\"%.4f\", \"speed\":\"%d\", \"id\":\"%s\"}", current_lat, current_long, current_speed, my_id);
                     write(sd, buffer, strlen(buffer));
+
+                    // asteptare blocanta, handshake
+                    memset(buffer, 0, sizeof(buffer));
+
+                    int bytes = read(sd, buffer, sizeof(buffer) - 1);
+
+                    if (strstr(buffer, "\"axis\":"))
+                    {
+                        int new_axis = -1;
+                        char *p = strstr(buffer, "\"axis\":");
+                        sscanf(p + 7, "%d", &new_axis);
+                        if (new_axis != -1)
+                            current_axis = new_axis;
+                    }
+                    char *msg = strstr(buffer, "\"msg\":\"");
+                    if (msg)
+                    {
+                        char text[256];
+                        sscanf(msg + 7, "%[^\"]", text);
+                        printf("\n[SERVER INITIAL] %s\n", text);
+                    }
                 }
                 else
                 {

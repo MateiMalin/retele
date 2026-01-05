@@ -91,6 +91,7 @@ void log_event(const char *json_string)
     pthread_mutex_unlock(&log_lock);
 }
 
+// functie care imi scrie intr-un json, starea la fiecare masina de pe harta
 void save_car_data()
 {
     FILE *f = fopen("cars.json", "w");
@@ -115,7 +116,7 @@ void save_car_data()
             fprintf(f, "    \"id\": \"%s\",\n", clients[i].id);
             fprintf(f, "    \"lat\": %.4f,\n", clients[i].lat);
             fprintf(f, "    \"lng\": %.4f,\n", clients[i].lng);
-            fprintf(f, "    \"speed\": %.1f,\n", clients[i].speed);
+            fprintf(f, "    \"speed\": %d,\n", clients[i].speed);
             fprintf(f, "    \"street\": \"%s\"\n", clients[i].street_name);
             fprintf(f, "  }");
 
@@ -167,6 +168,41 @@ int find_street_index(float lat, float lng)
         }
     }
     return -1;
+}
+
+// aici e functie ca sa anunt de accident,  atunci cand se intamapla
+void broadcast_accident_event(int s_index)
+{
+    if (s_index == -1)
+        return;
+    char msj_local[512];
+    char msj_global[512];
+    char s_name[64];
+
+    strcpy(s_name, city_map[s_index].name);
+
+    // formatez cele 2 msj
+    snprintf(msj_local, sizeof(msj_local), "{\"cmd\":\"ALERT\", \"type\":\"CRITIC\", \"msg\":\"ACCIDENT AICI! Limita redusa la 10 km/h pe %s!\"}\n", s_name);
+    snprintf(msj_global, sizeof(msj_global), "{\"cmd\":\"ALERT\", \"type\":\"INFO\", \"msg\":\"Atentie: Accident raportat pe %s. Evitati zona if possible.\"}\n", s_name);
+
+    pthread_mutex_lock(&data_lock);
+    for (int i = 0; i < MAX_CLIENTS; i++)
+    {
+        if (clients[i].active)
+        {
+            int client_s_index = find_street_index(clients[i].lat, clients[i].lng);
+
+            if (client_s_index == s_index)
+                write(i, msj_local, strlen(msj_local));
+        }
+        else
+        {
+            write(i, msj_global, strlen(msj_global));
+        }
+    }
+    pthread_mutex_unlock(&data_lock);
+
+    printf("[BROADCAST] Accident pe %s anuntat la toti clientii.\n", s_name);
 }
 
 // functie care sa alerteze masinile daca trebuie sa reduca viteza
@@ -260,6 +296,7 @@ void *client_thread(void *arg)
 
                 // protejam scrierea datelor noului client
                 pthread_mutex_lock(&data_lock);
+                // intializam un client nou, blank
                 strcpy(clients[fd].id, id);
                 clients[fd].active = 1;
                 clients[fd].lat = 0;
@@ -271,12 +308,14 @@ void *client_thread(void *arg)
 
                 printf("[CONNECT] S-a conectat un client nou: %s (socket fd: %d)\n", id, fd);
 
+                // dam un mic reset la fisierul cu car data
                 save_car_data();
 
                 char log_buf[BUFFER_SIZE];
                 snprintf(log_buf, sizeof(log_buf), "{\"event\":\"CONNECT\", \"id\":\"%s\", \"ts\":%ld}", id, time(NULL));
                 log_event(log_buf);
 
+                // la asta, nu stiu daca mai am nevoie de el, sau daca nu cumva ar trebui sa il formatez mai frumos
                 snprintf(response, sizeof(response), "{\"status\":\"OK\", \"msg\":\"Welcome %s\"}\n", id);
                 write(fd, response, strlen(response));
             }
@@ -311,6 +350,7 @@ void *client_thread(void *arg)
             int temp_speed = 0;
             char *p;
 
+            // imi iau toate datele din telemetry
             p = strstr(buffer, "\"lat\":\"");
             if (p)
                 sscanf(p + 7, "%f", &temp_lat);
@@ -359,45 +399,64 @@ void *client_thread(void *arg)
                     recc_axis = 1;
 
                 // trebuie sa trimitem un mesaj nou catre client ca sa il anuntam in ce directie sa o ia
-                snprintf(response, sizeof(response), "{\"cmd\":\"INFO\", \"street\":\"%s\", \"limit\":%d, \"axis\":%d, \"msg\":\"Va aflati pe %s\"}\n", city_map[street_index].name, city_map[street_index].current_speed_limit, recc_axis, city_map[street_index].name);
-                write(fd, response, strlen(response));
-
-                if (street_index != old_index)
-                    city_map[street_index]
-                        .car_count++;
-
-                snprintf(response, sizeof(response),
-                         "Va aflati pe strada: %s , conduceti cu %d km/h iar limita de viteza este de: %d\n",
-                         city_map[street_index].name,
-                         clients[fd].speed,
-                         city_map[street_index].current_speed_limit);
-                write(fd, response, strlen(response));
-
-                if (city_map[street_index].has_accident)
-                {
-                    alert_speed(street_index, 10, 1, fd);
-                    snprintf(response, sizeof(response), "{\"cmd\":\"ALERT\", \"msg\":\"Accident pe %s! Limita 10 km/h\"}\n", city_map[street_index].name);
-                    write(fd, response, strlen(response));
-                }
+                city_map[street_index].current_speed_limit = city_map[street_index].default_speed_limit;
+                city_map[street_index].traffic_level = 1;
 
                 if (city_map[street_index].car_count > 5)
                 {
                     city_map[street_index].traffic_level = 3;
                     city_map[street_index].current_speed_limit = 30;
-
-                    alert_speed(street_index, 30, 2, fd);
                 }
                 else if (city_map[street_index].car_count > 3)
                 {
                     city_map[street_index].traffic_level = 2;
                     city_map[street_index].current_speed_limit = 40;
-
-                    alert_speed(street_index, 40, 2, fd);
                 }
+
+                if (city_map[street_index].has_accident)
+                {
+                    city_map[street_index].traffic_level = 4;
+                    city_map[street_index].current_speed_limit = 10;
+                }
+
+                char text_mesaj[256];
+                char status_drum[50];
+
+                // facem un status pentru fiecare drum in parte
+                if (city_map[street_index].has_accident)
+                    strcpy(status_drum, "ACCIDENT! (limit 10)");
+                else if (city_map[street_index].traffic_level == 3)
+                    strcpy(status_drum, "Trafic Intens (Limit 30)");
+                else if (city_map[street_index].traffic_level == 2)
+                    strcpy(status_drum, "Trafic Mediu (Limit 40)");
+                else
+                    strcpy(status_drum, "Drum Liber");
+
+                // facem un mesaj pentru strada
+                snprintf(text_mesaj, sizeof(text_mesaj),
+                         "Strada: %s | %s | Viteza ta: %d km/h",
+                         city_map[street_index].name,
+                         status_drum,
+                         clients[fd].speed);
+
+                // facem comanda
+                snprintf(response, sizeof(response),
+                         "{\"cmd\":\"INFO\", \"street\":\"%s\", \"limit\":%d, \"axis\":%d, \"msg\":\"%s\"}\n",
+                         city_map[street_index].name,
+                         city_map[street_index].current_speed_limit,
+                         recc_axis,
+                         text_mesaj);
+
+                write(fd, response, strlen(response));
 
                 if (clients[fd].speed > city_map[street_index].current_speed_limit)
                 {
-                    alert_speed(street_index, city_map[street_index].current_speed_limit, 3, fd);
+                    char alert_buf[512];
+                    snprintf(alert_buf, sizeof(alert_buf),
+                             "{\"cmd\":\"ALERT\", \"type\":\"WARNING\", \"msg\":\"DEPASIRE VITEZA! Limita actuala e %d km/h\"}\n",
+                             city_map[street_index].current_speed_limit);
+
+                    write(fd, alert_buf, strlen(alert_buf));
                 }
             }
             else
@@ -433,9 +492,11 @@ void *client_thread(void *arg)
             {
                 pthread_mutex_lock(&data_lock);
                 city_map[street_idx].has_accident = 1;
+                city_map[street_idx].current_speed_limit = 10;
                 pthread_mutex_unlock(&data_lock);
 
-                alert_speed(street_idx, 10, 1, fd);
+                // alert_speed(street_idx, 10, 1, fd);
+                broadcast_accident_event(street_idx);
 
                 snprintf(response, sizeof(response), "{\"status\":\"RECEIVED\", \"msg\":\"Raport accident inregistrat pe %s. Multumim!\"}\n", city_map[street_idx].name);
             }
@@ -511,6 +572,8 @@ int main()
 
     memset(clients, 0, sizeof(clients));
 
+    // aici ar trebui sa resetez fisierul cu masini in prealabil
+    save_car_data();
     if ((sd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     {
         perror("[server] Eroare la creare socket");
