@@ -31,5 +31,9 @@
 {"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":77.1528, "speed":49, "ts":1767688611},
 {"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":80.5556, "speed":49, "ts":1767688621},
 {"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":84.0278, "speed":50, "ts":1767688631},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":87.3611, "speed":48, "ts":1767688641}
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":87.3611, "speed":48, "ts":1767688641},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":90.6250, "speed":47, "ts":1767688651},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":93.9583, "speed":48, "ts":1767688661},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":97.1528, "speed":46, "ts":1767688671},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":100.3472, "speed":46, "ts":1767688681}
 ]
