@@ -9,8 +9,7 @@
 #include <errno.h>
 #include <pthread.h>
 #include <time.h>
-
-#include <signal.h> // <--- Adauga asta sus de tot la include-uri
+#include <signal.h>
 
 #define PORT 2728
 #define BUFFER_SIZE 1024
@@ -196,10 +195,10 @@ void broadcast_accident_event(int s_index)
 
             if (client_s_index == s_index)
                 write(i, msj_local, strlen(msj_local));
-        }
-        else
-        {
-            write(i, msj_global, strlen(msj_global));
+            else
+            {
+                write(i, msj_global, strlen(msj_global));
+            }
         }
     }
     pthread_mutex_unlock(&data_lock);
@@ -225,6 +224,10 @@ void *client_thread(void *arg)
         {
             // daca ne deconectam de la server
             printf("Clientul cu fd : %d s-a deconectat\n", fd);
+
+            char log_buf[BUFFER_SIZE];
+            snprintf(log_buf, sizeof(log_buf), "{\"event\":\"DISCONNECT\", \"id\":\"%s\", \"ts\":%ld}", clients[fd].id, time(NULL));
+            log_event(log_buf);
 
             pthread_mutex_lock(&data_lock);
 
@@ -283,6 +286,10 @@ void *client_thread(void *arg)
             clients[fd].subscription = 0;
             pthread_mutex_unlock(&data_lock);
 
+            char log_buf[BUFFER_SIZE];
+            snprintf(log_buf, sizeof(log_buf), "{\"event\":\"UNSUBSCRIBE\", \"id\":\"%s\", \"ts\":%ld}", clients[fd].id, time(NULL));
+            log_event(log_buf);
+
             printf("[UNSUBSCRIBE] Clientul cu id-ul: %s s-a dezabonat\n", clients[fd].id);
             snprintf(response, sizeof(response), "{\"status\":\"OK\", \"msg\":\"Unsubscribed\"}\n");
             write(fd, response, strlen(response));
@@ -292,6 +299,10 @@ void *client_thread(void *arg)
             pthread_mutex_lock(&data_lock);
             clients[fd].subscription = 1;
             pthread_mutex_unlock(&data_lock);
+
+            char log_buf[BUFFER_SIZE];
+            snprintf(log_buf, sizeof(log_buf), "{\"event\":\"SUBSCRIBE\", \"id\":\"%s\", \"ts\":%ld}", clients[fd].id, time(NULL));
+            log_event(log_buf);
 
             printf("[SUBSCRIBE] Clientul cu id-ul: %s s-a abonat\n", clients[fd].id);
             snprintf(response, sizeof(response), "{\"status\":\"OK\", \"msg\":\"Subscribed\"}\n");
@@ -328,8 +339,22 @@ void *client_thread(void *arg)
 
             if (old_index != -1 && old_index != street_index)
             {
-                if (city_map[old_index].car_count > 0)
-                    city_map[old_index].car_count--;
+                if (old_index != -1)
+                {
+                    if (city_map[old_index].car_count > 0)
+                        city_map[old_index].car_count--;
+
+                    printf("[TRAFFIC] %s a iesit de pe %s. Count: %d\n",
+                           clients[fd].id, city_map[old_index].name, city_map[old_index].car_count);
+                }
+
+                if (street_index != -1)
+                {
+                    city_map[street_index].car_count++;
+
+                    printf("[TRAFFIC] %s a intrat pe %s. Count: %d\n",
+                           clients[fd].id, city_map[street_index].name, city_map[street_index].car_count);
+                }
             }
 
             clients[fd].lat = temp_lat;
@@ -359,12 +384,12 @@ void *client_thread(void *arg)
                 city_map[street_index].current_speed_limit = city_map[street_index].default_speed_limit;
                 city_map[street_index].traffic_level = 1;
 
-                if (city_map[street_index].car_count > 5)
+                if (city_map[street_index].car_count >= 5)
                 {
                     city_map[street_index].traffic_level = 3;
                     city_map[street_index].current_speed_limit = 30;
                 }
-                else if (city_map[street_index].car_count > 3)
+                else if (city_map[street_index].car_count >= 3)
                 {
                     city_map[street_index].traffic_level = 2;
                     city_map[street_index].current_speed_limit = 40;
@@ -419,7 +444,7 @@ void *client_thread(void *arg)
             else
             {
                 strcpy(clients[fd].street_name, "Unknown");
-                snprintf(response, sizeof(response), "Alert, the street name is not known...please try something else...\n");
+                snprintf(response, sizeof(response), "{\"cmd\":\"UNKNOWN\", \"msg\":\"Ai parasit zona monitorizata!\"}\n");
                 write(fd, response, strlen(response));
             }
 
@@ -435,15 +460,19 @@ void *client_thread(void *arg)
         }
         else if (strstr(buffer, "REPORT"))
         {
-            printf("[REPORT] Clientul %s raporteaza: accident\n", clients[fd].id);
+            int street_idx = find_street_index(clients[fd].lat, clients[fd].lng);
+            char affected_street[64] = "Unknown";
+
+            if (street_idx != -1)
+            {
+                strcpy(affected_street, city_map[street_idx].name);
+            }
+
+            printf("[REPORT] Clientul %s raporteaza accident pe strada: %s\n", clients[fd].id, affected_street);
 
             char log_buf[BUFFER_SIZE];
-            snprintf(log_buf, sizeof(log_buf),
-                     "{\"event\":\"REPORT\", \"type\":\"ACCIDENT\", \"reporter\":\"%s\", \"ts\":%ld}",
-                     clients[fd].id, time(NULL));
+            snprintf(log_buf, sizeof(log_buf), "{\"event\":\"REPORT\", \"type\":\"ACCIDENT\", \"reporter\":\"%s\", \"street\":\"%s\", \"ts\":%ld}", clients[fd].id, affected_street, time(NULL));
             log_event(log_buf);
-
-            int street_idx = find_street_index(clients[fd].lat, clients[fd].lng);
 
             if (street_idx != -1)
             {

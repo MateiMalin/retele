@@ -1,3 +1,9 @@
 [
-
+  {
+    "id": "IS-49-VIS",
+    "lat": 93.5417,
+    "lng": 84.0278,
+    "speed": 50,
+    "street": "Margine Nord-Est"
+  }
 ]
