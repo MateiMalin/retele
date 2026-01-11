@@ -1,39 +1,1442 @@
 [
-{"event":"CONNECT", "id":"IS-49-VIS", "ts":1767688316},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":60.0000, "lng":60.0000, "speed":62, "ts":1767688318},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":55.7639, "lng":60.0000, "speed":61, "ts":1767688328},
-{"event":"SUBSCRIBE", "id":"IS-49-VIS", "ts":1767688333},
-{"event":"REPORT", "type":"ACCIDENT", "reporter":"IS-49-VIS", "street":"Centru Est Sus", "ts":1767688336},
-{"event":"DISCONNECT", "id":"IS-49-VIS", "ts":1767688343},
-{"event":"CONNECT", "id":"IS-49-VIS", "ts":1767688346},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":30.0000, "lng":30.0000, "speed":29, "ts":1767688350},
-{"event":"CONNECT", "id":"VS-64-XML", "ts":1767688353},
-{"event":"TELEMETRY", "id":"VS-64-XML", "lat":30.0000, "lng":30.0000, "speed":30, "ts":1767688355},
-{"event":"CONNECT", "id":"VS-64-VAV", "ts":1767688360},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":31.8750, "lng":30.0000, "speed":27, "ts":1767688360},
-{"event":"TELEMETRY", "id":"VS-64-VAV", "lat":30.0000, "lng":30.0000, "speed":29, "ts":1767688363},
-{"event":"TELEMETRY", "id":"VS-64-XML", "lat":31.9444, "lng":30.0000, "speed":28, "ts":1767688365},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":33.8889, "lng":30.0000, "speed":29, "ts":1767688370},
-{"event":"TELEMETRY", "id":"VS-64-VAV", "lat":31.8750, "lng":30.0000, "speed":27, "ts":1767688373},
-{"event":"CONNECT", "id":"IS-49-VIS", "ts":1767688480},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":60.0000, "lng":60.0000, "speed":100, "ts":1767688491},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":66.8750, "lng":60.0000, "speed":99, "ts":1767688501},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":71.2500, "lng":60.0000, "speed":63, "ts":1767688511},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":75.6250, "lng":60.0000, "speed":63, "ts":1767688521},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":80.1389, "lng":60.0000, "speed":65, "ts":1767688531},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":84.5833, "lng":60.0000, "speed":64, "ts":1767688541},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":89.0278, "lng":60.0000, "speed":64, "ts":1767688551},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":60.0000, "speed":65, "ts":1767688561},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":63.5417, "speed":51, "ts":1767688571},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":67.0833, "speed":51, "ts":1767688581},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":70.4167, "speed":48, "ts":1767688591},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":73.7500, "speed":48, "ts":1767688601},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":77.1528, "speed":49, "ts":1767688611},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":80.5556, "speed":49, "ts":1767688621},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":84.0278, "speed":50, "ts":1767688631},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":87.3611, "speed":48, "ts":1767688641},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":90.6250, "speed":47, "ts":1767688651},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":93.9583, "speed":48, "ts":1767688661},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":97.1528, "speed":46, "ts":1767688671},
-{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":93.5417, "lng":100.3472, "speed":46, "ts":1767688681}
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767688316
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 62,
+        "ts": 1767688318
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 55.7639,
+        "lng": 60.0000,
+        "speed": 61,
+        "ts": 1767688328
+    },
+    {
+        "event": "SUBSCRIBE",
+        "id": "IS-49-VIS",
+        "ts": 1767688333
+    },
+    {
+        "event": "REPORT",
+        "type": "ACCIDENT",
+        "reporter": "IS-49-VIS",
+        "street": "Centru Est Sus",
+        "ts": 1767688336
+    },
+    {
+        "event": "DISCONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767688343
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767688346
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 30.0000,
+        "lng": 30.0000,
+        "speed": 29,
+        "ts": 1767688350
+    },
+    {
+        "event": "CONNECT",
+        "id": "VS-64-XML",
+        "ts": 1767688353
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 30.0000,
+        "lng": 30.0000,
+        "speed": 30,
+        "ts": 1767688355
+    },
+    {
+        "event": "CONNECT",
+        "id": "VS-64-VAV",
+        "ts": 1767688360
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 31.8750,
+        "lng": 30.0000,
+        "speed": 27,
+        "ts": 1767688360
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-VAV",
+        "lat": 30.0000,
+        "lng": 30.0000,
+        "speed": 29,
+        "ts": 1767688363
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 31.9444,
+        "lng": 30.0000,
+        "speed": 28,
+        "ts": 1767688365
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 33.8889,
+        "lng": 30.0000,
+        "speed": 29,
+        "ts": 1767688370
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-VAV",
+        "lat": 31.8750,
+        "lng": 30.0000,
+        "speed": 27,
+        "ts": 1767688373
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767688480
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 100,
+        "ts": 1767688491
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 66.8750,
+        "lng": 60.0000,
+        "speed": 99,
+        "ts": 1767688501
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 71.2500,
+        "lng": 60.0000,
+        "speed": 63,
+        "ts": 1767688511
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 75.6250,
+        "lng": 60.0000,
+        "speed": 63,
+        "ts": 1767688521
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 80.1389,
+        "lng": 60.0000,
+        "speed": 65,
+        "ts": 1767688531
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 84.5833,
+        "lng": 60.0000,
+        "speed": 64,
+        "ts": 1767688541
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 89.0278,
+        "lng": 60.0000,
+        "speed": 64,
+        "ts": 1767688551
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 60.0000,
+        "speed": 65,
+        "ts": 1767688561
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 63.5417,
+        "speed": 51,
+        "ts": 1767688571
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 67.0833,
+        "speed": 51,
+        "ts": 1767688581
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 70.4167,
+        "speed": 48,
+        "ts": 1767688591
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 73.7500,
+        "speed": 48,
+        "ts": 1767688601
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 77.1528,
+        "speed": 49,
+        "ts": 1767688611
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 80.5556,
+        "speed": 49,
+        "ts": 1767688621
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 84.0278,
+        "speed": 50,
+        "ts": 1767688631
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 87.3611,
+        "speed": 48,
+        "ts": 1767688641
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 90.6250,
+        "speed": 47,
+        "ts": 1767688651
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 93.9583,
+        "speed": 48,
+        "ts": 1767688661
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 97.1528,
+        "speed": 46,
+        "ts": 1767688671
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 100.3472,
+        "speed": 46,
+        "ts": 1767688681
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767716811
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 102,
+        "ts": 1767716828
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 67.2222,
+        "lng": 60.0000,
+        "speed": 104,
+        "ts": 1767716838
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 71.8056,
+        "lng": 60.0000,
+        "speed": 66,
+        "ts": 1767716848
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 76.2500,
+        "lng": 60.0000,
+        "speed": 64,
+        "ts": 1767716858
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767717012
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 59,
+        "ts": 1767717019
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 55.9028,
+        "lng": 60.0000,
+        "speed": 59,
+        "ts": 1767717029
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 51.8056,
+        "lng": 60.0000,
+        "speed": 59,
+        "ts": 1767717039
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 47.5694,
+        "lng": 60.0000,
+        "speed": 61,
+        "ts": 1767717049
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767717154
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 59,
+        "ts": 1767717157
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 55.7639,
+        "lng": 60.0000,
+        "speed": 61,
+        "ts": 1767717167
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 51.5972,
+        "lng": 60.0000,
+        "speed": 60,
+        "ts": 1767717177
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 47.2917,
+        "lng": 60.0000,
+        "speed": 62,
+        "ts": 1767717187
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 43.3333,
+        "lng": 60.0000,
+        "speed": 57,
+        "ts": 1767717197
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 39.3750,
+        "lng": 60.0000,
+        "speed": 57,
+        "ts": 1767717207
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 35.6250,
+        "lng": 60.0000,
+        "speed": 54,
+        "ts": 1767717217
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 32.0139,
+        "lng": 60.0000,
+        "speed": 52,
+        "ts": 1767717227
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 28.5417,
+        "lng": 60.0000,
+        "speed": 50,
+        "ts": 1767717237
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 25.2083,
+        "lng": 60.0000,
+        "speed": 48,
+        "ts": 1767717247
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 22.0139,
+        "lng": 60.0000,
+        "speed": 46,
+        "ts": 1767717257
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 18.8889,
+        "lng": 60.0000,
+        "speed": 45,
+        "ts": 1767717267
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 15.6944,
+        "lng": 60.0000,
+        "speed": 46,
+        "ts": 1767717277
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 12.5694,
+        "lng": 60.0000,
+        "speed": 45,
+        "ts": 1767717287
+    },
+    {
+        "event": "CONNECT",
+        "id": "VS-64-XML",
+        "ts": 1767717295
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 9.5139,
+        "lng": 60.0000,
+        "speed": 44,
+        "ts": 1767717297
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 60.0000,
+        "lng": 90.0000,
+        "speed": 102,
+        "ts": 1767717301
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 9.5139,
+        "lng": 56.8750,
+        "speed": 45,
+        "ts": 1767717307
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 67.0833,
+        "lng": 90.0000,
+        "speed": 102,
+        "ts": 1767717311
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 9.5139,
+        "lng": 53.6806,
+        "speed": 46,
+        "ts": 1767717317
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 70.5556,
+        "lng": 90.0000,
+        "speed": 50,
+        "ts": 1767717321
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 6.3889,
+        "lng": 53.6806,
+        "speed": 45,
+        "ts": 1767717327
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 74.0278,
+        "lng": 90.0000,
+        "speed": 50,
+        "ts": 1767717331
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 3.1944,
+        "lng": 53.6806,
+        "speed": 46,
+        "ts": 1767717337
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 77.5000,
+        "lng": 90.0000,
+        "speed": 50,
+        "ts": 1767717341
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 0.0000,
+        "lng": 53.6806,
+        "speed": 46,
+        "ts": 1767717347
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 80.9722,
+        "lng": 90.0000,
+        "speed": 50,
+        "ts": 1767717351
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": -3.2639,
+        "lng": 53.6806,
+        "speed": 47,
+        "ts": 1767717357
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 84.3750,
+        "lng": 90.0000,
+        "speed": 49,
+        "ts": 1767717361
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 3.1270,
+        "lng": 53.6806,
+        "speed": 45,
+        "ts": 1767717367
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 87.9167,
+        "lng": 90.0000,
+        "speed": 51,
+        "ts": 1767717371
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 6.3214,
+        "lng": 53.6806,
+        "speed": 46,
+        "ts": 1767717377
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 90.0000,
+        "speed": 49,
+        "ts": 1767717381
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 9.3770,
+        "lng": 53.6806,
+        "speed": 44,
+        "ts": 1767717387
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 93.5417,
+        "speed": 51,
+        "ts": 1767717391
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 12.4326,
+        "lng": 53.6806,
+        "speed": 44,
+        "ts": 1767717397
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 97.0139,
+        "speed": 50,
+        "ts": 1767717401
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 15.6270,
+        "lng": 53.6806,
+        "speed": 46,
+        "ts": 1767717407
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 100.5555,
+        "speed": 51,
+        "ts": 1767717411
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 18.6826,
+        "lng": 53.6806,
+        "speed": 44,
+        "ts": 1767717417
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 93.4008,
+        "speed": 52,
+        "ts": 1767717421
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 21.5992,
+        "lng": 53.6806,
+        "speed": 42,
+        "ts": 1767717427
+    },
+    {
+        "event": "CONNECT",
+        "id": "VS-64-VAV",
+        "ts": 1767717428
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-VAV",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 60,
+        "ts": 1767717431
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 89.7897,
+        "speed": 52,
+        "ts": 1767717431
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767717436
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 24.6548,
+        "lng": 53.6806,
+        "speed": 44,
+        "ts": 1767717437
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-VAV",
+        "lat": 64.0278,
+        "lng": 60.0000,
+        "speed": 58,
+        "ts": 1767717441
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 86.4563,
+        "speed": 48,
+        "ts": 1767717441
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 69.0000,
+        "speed": 74,
+        "ts": 1767717442
+    },
+    {
+        "event": "REPORT",
+        "type": "ACCIDENT",
+        "reporter": "IS-49-VIS",
+        "street": "Centru Est Sus",
+        "ts": 1767717446
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 27.7103,
+        "lng": 53.6806,
+        "speed": 44,
+        "ts": 1767717456
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 82.9841,
+        "speed": 50,
+        "ts": 1767717456
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.8333,
+        "lng": 69.0000,
+        "speed": 12,
+        "ts": 1767717456
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-VAV",
+        "lat": 64.7917,
+        "lng": 60.0000,
+        "speed": 11,
+        "ts": 1767717456
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 30.9048,
+        "lng": 53.6806,
+        "speed": 46,
+        "ts": 1767717466
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 61.5278,
+        "lng": 69.0000,
+        "speed": 10,
+        "ts": 1767717466
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 79.4424,
+        "speed": 51,
+        "ts": 1767717466
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-VAV",
+        "lat": 65.3472,
+        "lng": 60.0000,
+        "speed": 8,
+        "ts": 1767717466
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 76.1091,
+        "speed": 48,
+        "ts": 1767717476
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 62.2222,
+        "lng": 69.0000,
+        "speed": 10,
+        "ts": 1767717476
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 34.0992,
+        "lng": 53.6806,
+        "speed": 46,
+        "ts": 1767717476
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-VAV",
+        "lat": 65.9722,
+        "lng": 60.0000,
+        "speed": 9,
+        "ts": 1767717476
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 62.9861,
+        "lng": 69.0000,
+        "speed": 11,
+        "ts": 1767717486
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 37.2242,
+        "lng": 53.6806,
+        "speed": 45,
+        "ts": 1767717486
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 72.8452,
+        "speed": 47,
+        "ts": 1767717486
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-VAV",
+        "lat": 66.7361,
+        "lng": 60.0000,
+        "speed": 11,
+        "ts": 1767717486
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 40.2798,
+        "lng": 53.6806,
+        "speed": 44,
+        "ts": 1767717496
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 63.6111,
+        "lng": 69.0000,
+        "speed": 9,
+        "ts": 1767717496
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-XML",
+        "lat": 91.3194,
+        "lng": 69.6508,
+        "speed": 46,
+        "ts": 1767717496
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "VS-64-VAV",
+        "lat": 67.5694,
+        "lng": 60.0000,
+        "speed": 12,
+        "ts": 1767717496
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767717730
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 59,
+        "ts": 1767717735
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 56.0417,
+        "lng": 60.0000,
+        "speed": 57,
+        "ts": 1767717745
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 52.0833,
+        "lng": 60.0000,
+        "speed": 57,
+        "ts": 1767717755
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 48.2639,
+        "lng": 60.0000,
+        "speed": 55,
+        "ts": 1767717765
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 44.3056,
+        "lng": 60.0000,
+        "speed": 57,
+        "ts": 1767717775
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 40.5556,
+        "lng": 60.0000,
+        "speed": 54,
+        "ts": 1767717785
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 36.8750,
+        "lng": 60.0000,
+        "speed": 53,
+        "ts": 1767717795
+    },
+    {
+        "event": "DISCONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767717796
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767717823
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 59,
+        "ts": 1767717849
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 55.8333,
+        "lng": 60.0000,
+        "speed": 60,
+        "ts": 1767717859
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 51.6667,
+        "lng": 60.0000,
+        "speed": 60,
+        "ts": 1767717869
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767951617
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 60,
+        "ts": 1767951641
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 64.0278,
+        "lng": 60.0000,
+        "speed": 58,
+        "ts": 1767951651
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 68.1250,
+        "lng": 60.0000,
+        "speed": 59,
+        "ts": 1767951661
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 72.3611,
+        "lng": 60.0000,
+        "speed": 61,
+        "ts": 1767951671
+    },
+    {
+        "event": "REPORT",
+        "type": "ACCIDENT",
+        "reporter": "IS-49-VIS",
+        "street": "Centru Est Sus",
+        "ts": 1767951679
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 73.0556,
+        "lng": 60.0000,
+        "speed": 10,
+        "ts": 1767951689
+    },
+    {
+        "event": "SUBSCRIBE",
+        "id": "IS-49-VIS",
+        "ts": 1767951695
+    },
+    {
+        "event": "UNSUBSCRIBE",
+        "id": "IS-49-VIS",
+        "ts": 1767951702
+    },
+    {
+        "event": "DISCONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767951705
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767952115
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 59,
+        "ts": 1767952123
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 64.1667,
+        "lng": 60.0000,
+        "speed": 60,
+        "ts": 1767952133
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 68.2639,
+        "lng": 60.0000,
+        "speed": 59,
+        "ts": 1767952143
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 72.2917,
+        "lng": 60.0000,
+        "speed": 58,
+        "ts": 1767952153
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 76.4583,
+        "lng": 60.0000,
+        "speed": 60,
+        "ts": 1767952163
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767952169
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 80.7639,
+        "lng": 60.0000,
+        "speed": 62,
+        "ts": 1767952173
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 90.0000,
+        "speed": 101,
+        "ts": 1767952177
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 84.9305,
+        "lng": 60.0000,
+        "speed": 60,
+        "ts": 1767952183
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 66.9444,
+        "lng": 90.0000,
+        "speed": 100,
+        "ts": 1767952187
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 89.2361,
+        "lng": 60.0000,
+        "speed": 62,
+        "ts": 1767952193
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 70.3472,
+        "lng": 90.0000,
+        "speed": 49,
+        "ts": 1767952197
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 60.0000,
+        "speed": 62,
+        "ts": 1767952203
+    },
+    {
+        "event": "REPORT",
+        "type": "ACCIDENT",
+        "reporter": "IS-49-VIS",
+        "street": "Est Vertical",
+        "ts": 1767952204
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 93.5417,
+        "lng": 63.5417,
+        "speed": 51,
+        "ts": 1767952214
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 70.9028,
+        "lng": 90.0000,
+        "speed": 8,
+        "ts": 1767952214
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767952831
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767952847
+    },
+    {
+        "event": "DISCONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767952850
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-64-RXD",
+        "ts": 1767952857
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767977929
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 58,
+        "ts": 1767977933
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 56.1111,
+        "lng": 60.0000,
+        "speed": 56,
+        "ts": 1767977943
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 52.1528,
+        "lng": 60.0000,
+        "speed": 57,
+        "ts": 1767977953
+    },
+    {
+        "event": "SUBSCRIBE",
+        "id": "IS-49-VIS",
+        "ts": 1767977958
+    },
+    {
+        "event": "UNSUBSCRIBE",
+        "id": "IS-49-VIS",
+        "ts": 1767977961
+    },
+    {
+        "event": "REPORT",
+        "type": "ACCIDENT",
+        "reporter": "IS-49-VIS",
+        "street": "Centru Est Sus",
+        "ts": 1767977964
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 51.3889,
+        "lng": 60.0000,
+        "speed": 11,
+        "ts": 1767977974
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767985139
+    },
+    {
+        "event": "CONNECT",
+        "id": "IS-49-VIS",
+        "ts": 1767985155
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 60.0000,
+        "lng": 60.0000,
+        "speed": 60,
+        "ts": 1767985266
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 55.8333,
+        "lng": 60.0000,
+        "speed": 60,
+        "ts": 1767985276
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 51.6667,
+        "lng": 60.0000,
+        "speed": 60,
+        "ts": 1767985286
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 47.5694,
+        "lng": 60.0000,
+        "speed": 59,
+        "ts": 1767985296
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 43.6806,
+        "lng": 60.0000,
+        "speed": 56,
+        "ts": 1767985306
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 39.9306,
+        "lng": 60.0000,
+        "speed": 54,
+        "ts": 1767985316
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 36.1806,
+        "lng": 60.0000,
+        "speed": 54,
+        "ts": 1767985326
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 32.3611,
+        "lng": 60.0000,
+        "speed": 55,
+        "ts": 1767985336
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 28.6806,
+        "lng": 60.0000,
+        "speed": 53,
+        "ts": 1767985346
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 25.0000,
+        "lng": 60.0000,
+        "speed": 53,
+        "ts": 1767985356
+    },
+    {
+        "event": "SUBSCRIBE",
+        "id": "IS-49-VIS",
+        "ts": 1767985361
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 21.4583,
+        "lng": 60.0000,
+        "speed": 51,
+        "ts": 1767985371
+    },
+    {
+        "event": "UNSUBSCRIBE",
+        "id": "IS-49-VIS",
+        "ts": 1767985374
+    },
+    {
+        "event": "TELEMETRY",
+        "id": "IS-49-VIS",
+        "lat": 17.9861,
+        "lng": 60.0000,
+        "speed": 50,
+        "ts": 1767985384
+    },
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":14.5833, "lng":60.0000, "speed":49, "ts":1767985394},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":11.0417, "lng":60.0000, "speed":51, "ts":1767985404},
+{"event":"REPORT", "type":"ACCIDENT", "reporter":"IS-49-VIS", "street":"Centru Est", "ts":1767985408},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":10.2083, "lng":60.0000, "speed":12, "ts":1767985418},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":9.3750, "lng":60.0000, "speed":12, "ts":1767985428},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":9.3750, "lng":59.0278, "speed":14, "ts":1767985438},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":9.3750, "lng":57.9167, "speed":16, "ts":1767985448},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":9.3750, "lng":56.9444, "speed":14, "ts":1767985458},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":9.3750, "lng":55.9722, "speed":14, "ts":1767985468},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":9.3750, "lng":54.8611, "speed":16, "ts":1767985478},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":8.1250, "lng":54.8611, "speed":18, "ts":1767985488},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":7.0139, "lng":54.8611, "speed":16, "ts":1767985498},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":5.8333, "lng":54.8611, "speed":17, "ts":1767985508},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":4.5139, "lng":54.8611, "speed":19, "ts":1767985518},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":3.1250, "lng":54.8611, "speed":20, "ts":1767985528},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":1.6667, "lng":54.8611, "speed":21, "ts":1767985538},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":0.2083, "lng":54.8611, "speed":21, "ts":1767985548},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":-1.1111, "lng":54.8611, "speed":19, "ts":1767985558},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":1.4603, "lng":54.8611, "speed":18, "ts":1767985568},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":2.5714, "lng":54.8611, "speed":16, "ts":1767985578},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":3.7520, "lng":54.8611, "speed":17, "ts":1767985588},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":5.0020, "lng":54.8611, "speed":18, "ts":1767985598},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":6.2520, "lng":54.8611, "speed":18, "ts":1767985608},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":7.4326, "lng":54.8611, "speed":17, "ts":1767985618},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":8.6131, "lng":54.8611, "speed":17, "ts":1767985628},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":9.6548, "lng":54.8611, "speed":15, "ts":1767985638},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":10.7659, "lng":54.8611, "speed":16, "ts":1767985648},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":11.8770, "lng":54.8611, "speed":16, "ts":1767985658},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":12.9881, "lng":54.8611, "speed":16, "ts":1767985668},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":14.0992, "lng":54.8611, "speed":16, "ts":1767985678},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":15.2798, "lng":54.8611, "speed":17, "ts":1767985688},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":16.5992, "lng":54.8611, "speed":19, "ts":1767985698},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":17.9881, "lng":54.8611, "speed":20, "ts":1767985708},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":19.5159, "lng":54.8611, "speed":22, "ts":1767985718},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":21.1131, "lng":54.8611, "speed":23, "ts":1767985728},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":22.7103, "lng":54.8611, "speed":23, "ts":1767985738},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":24.1687, "lng":54.8611, "speed":21, "ts":1767985748},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":25.7659, "lng":54.8611, "speed":23, "ts":1767985758},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":27.5020, "lng":54.8611, "speed":25, "ts":1767985768},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":29.3770, "lng":54.8611, "speed":27, "ts":1767985778},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":31.1131, "lng":54.8611, "speed":25, "ts":1767985788},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":32.9881, "lng":54.8611, "speed":27, "ts":1767985798},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":34.7242, "lng":54.8611, "speed":25, "ts":1767985808},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":36.5992, "lng":54.8611, "speed":27, "ts":1767985818},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":38.5437, "lng":54.8611, "speed":28, "ts":1767985828},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":40.5575, "lng":54.8611, "speed":29, "ts":1767985838},
+{"event":"TELEMETRY", "id":"IS-49-VIS", "lat":42.5714, "lng":54.8611, "speed":29, "ts":1767985848},
+{"event":"DISCONNECT", "id":"IS-49-VIS", "ts":1767985854}
 ]

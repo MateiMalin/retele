@@ -11,7 +11,7 @@
 #include <time.h>
 #include <signal.h>
 
-#define PORT 2728
+#define PORT 12433
 #define BUFFER_SIZE 1024
 #define MAX_CLIENTS 100
 
@@ -187,7 +187,8 @@ void broadcast_accident_event(int s_index)
     snprintf(msj_global, sizeof(msj_global), "{\"cmd\":\"ALERT\", \"type\":\"INFO\", \"msg\":\"Atentie: Accident raportat pe %s. Evitati zona if possible.\"}\n", s_name);
 
     pthread_mutex_lock(&data_lock);
-    for (int i = 0; i < MAX_CLIENTS; i++)
+    int i;
+    for (i = 0; i < MAX_CLIENTS; i++)
     {
         if (clients[i].active)
         {

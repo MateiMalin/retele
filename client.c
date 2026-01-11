@@ -192,6 +192,7 @@ int main(int argc, char *argv[])
                 char raw_msg[256];
                 char street_state[100] = "Normal";
 
+                // street state
                 char *p_msg = strstr(buffer, "\"msg\":\"");
                 if (p_msg)
                 {
