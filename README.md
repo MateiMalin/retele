@@ -1,146 +1,165 @@
+I understand. You want the complete, in-depth documentation provided in a clean, standard Markdown format that you can copy and paste directly into a `README.md` file for GitHub.
 
-Markdown
+Here is the raw Markdown content:
 
+---
 
+```markdown
 # 🚗 Smart Traffic Management System (TMS)
 
-> **An advanced, high-performance autonomous traffic monitoring and control system built on Linux using C Sockets and I/O Multiplexing.**
+> **An advanced autonomous traffic monitoring and control system built using C Sockets and Linux I/O Multiplexing.**
 
-[![C Language](https://img.shields.io/badge/Language-C-blue.svg)](https://en.cppreference.com/w/c)
-[![Socket](https://img.shields.io/badge/Network-TCP%2FIP-orange.svg)](https://datatracker.ietf.org/doc/html/rfc793)
-[![Platform](https://img.shields.io/badge/Platform-Linux-lightgrey.svg)](https://www.kernel.org/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Language](https://img.shields.io/badge/Language-C-blue.svg)](#)
+[![Socket](https://img.shields.io/badge/Network-TCP%2FIP-orange.svg)](#)
+[![Platform](https://img.shields.io/badge/Platform-Linux-lightgrey.svg)](#)
 
 ---
 
 ## 📋 Table of Contents
-1. [Introduction](#-introduction)
-2. [System Architecture](#-system-architecture)
-3. [Deep Dive: Technical Implementation](#-deep-dive-technical-implementation)
-4. [The Network Protocol](#-the-network-protocol)
-5. [Safety & Autonomous Logic](#-safety--autonomous-logic)
-6. [Installation & Usage](#-installation--usage)
-7. [Technical Challenges & Solutions](#-technical-challenges--solutions)
+1. [Introduction](#introduction)
+2. [System Architecture](#system-architecture)
+3. [Technical Implementation](#technical-implementation)
+4. [Communication Protocol](#communication-protocol)
+5. [Autonomous Safety Logic](#autonomous-safety-logic)
+6. [Installation & Usage](#installation--usage)
+7. [Technical Challenges & Solutions](#technical-challenges--solutions)
 
 ---
 
 ## 📖 Introduction
-The Smart TMS is designed to simulate an ecosystem of autonomous vehicles communicating with a central traffic authority. Unlike traditional multi-threaded servers, this project implements **Asynchronous I/O Multiplexing** to manage dozens of concurrent connections with a minimal CPU footprint.
+The Smart TMS is a simulation of an intelligent urban ecosystem where autonomous vehicles communicate with a central traffic authority. The project focuses on high-efficiency networking, utilizing **Asynchronous I/O Multiplexing** to manage concurrent vehicle telemetry without the overhead of multi-threading.
 
 ---
 
 ## 🏗️ System Architecture
 
-The system utilizes a **Stateful Client-Server model**. 
+The system utilizes a **Stateful Client-Server** model over the TCP/IP stack.
 
 
 
-### The Server (The Brain)
-* **Single-Process/Single-Threaded:** Uses `select()` to poll all active vehicle sockets.
-* **Global Registry:** Maintains a database of all connected vehicles, their current coordinates, and speeds.
-* **Alert Broadcaster:** When a collision is reported, the server identifies all vehicles within a specific radius and pushes emergency speed limits.
+### 1. The Traffic Authority (Server)
+* **Single-Process Event Loop:** Uses the `select()` system call to monitor all active vehicle connections.
+* **Registry Management:** Tracks unique vehicle IDs, real-time GPS coordinates, and instantaneous velocity.
+* **Collision Awareness:** Monitors the global map and broadcasts emergency directives (speed limits) when accidents are reported.
 
-### The Client (The Vehicle)
-* **Autonomous Simulation:** Calculates real-time GPS coordinates based on its internal velocity vector.
-* **Telemetry Engine:** Periodically transmits its state to the server without blocking the user input interface.
+### 2. The Smart Vehicle (Client)
+* **Kinematic Simulation:** Calculates real-time movement using velocity vectors and discrete-time integration.
+* **Non-Blocking Telemetry:** Handles concurrent user input (keyboard) and server commands (socket) while maintaining a steady movement heartbeat.
 
 ---
 
-## ⚙️ Deep Dive: Technical Implementation
+## ⚙️ Technical Implementation
 
 ### 🔄 I/O Multiplexing with `select()`
-The core of the application is the non-blocking event loop. Instead of spawning a thread for every car (which would be inefficient for hundreds of cars), we use:
+To avoid the resource consumption of "one thread per client," this project implements the `select()` system call. This allows the application to monitor multiple file descriptors (network socket and `stdin`) simultaneously.
+
+
 
 ```c
+// Core event loop structure
 FD_ZERO(&read_fds);
 FD_SET(socket_fd, &read_fds);
 FD_SET(STDIN_FILENO, &read_fds);
 
+// Wait for activity or 1-second simulation pulse
 int activity = select(max_fd + 1, &read_fds, NULL, NULL, &timeout);
 
+```
 
-Why this matters:
-Zero Latency: The car continues to move even if no data is received.
-Concurrency: The server can scale to handle many connections without the memory overhead of thread stacks.
-📐 The Movement Engine
-The client simulates physics using a discrete-time approach. Every time select() times out (1 second), the following logic is applied:
+### 📐 Movement Physics Simulation
+
+The client simulates vehicle displacement using a discrete-time approach triggered by the `select` timeout:
+
 $$ \Delta d = v \times \Delta t $$
 $$ Lat_{new} = Lat_{old} + (\Delta d \times \cos(\theta)) $$
 $$ Long_{new} = Long_{old} + (\Delta d \times \sin(\theta)) $$
-Where $\theta$ represents the current heading axis.
-📡 The Network Protocol
-We use a lightweight, pipe-delimited protocol designed for fast parsing in C.
-Direction
-Format
-Description
-C → S
-`ID
-LAT
-S → C
-`CMD
-NEW_SPEED
-C → S
-`REPORT
-ACCIDENT
 
-Data Integrity & Endianness
-To prevent data corruption between different CPU architectures, all multi-byte values (like Ports) are converted using:
-htons() / ntohs() (Host to Network Short)
-htonl() / ntohl() (Host to Network Long)
-🛡️ Safety & Autonomous Logic
-🚫 Speed Governor (Auto-Pilot)
-The vehicle logic includes a safety callback. When a WARNING packet is parsed:
-It enters a "Manual Override" state.
-It sets target_speed = min(current_speed, server_limit).
-It logs the event to the local terminal for the user.
-🗺️ Boundary & Collision Recovery
-If a vehicle hits the edge of the simulation map or receives a status of UNKNOWN from the server, it executes a Bumper Protocol:
-Reverts to last_known_good_coordinates.
-Flips the direction vector ($180^\circ$ turn).
-💻 Installation & Usage
-Prerequisites
-GCC Compiler
-Linux Environment (Standard C Libraries)
-Building the Project
+---
 
-Bash
+## 📡 Communication Protocol
 
+Comunicația is handled via a lightweight, pipe-delimited string protocol for fast, low-overhead parsing in C.
 
-make all # Or use the following:
-gcc server.c -o server -Wall -O2
-gcc client.c -o client -Wall -O2
+| Direction | Format | Purpose |
+| --- | --- | --- |
+| **Client → Server** | `ID | LAT |
+| **Server → Client** | `CMD | LIMIT |
+| **Client → Server** | `EVENT | ACCIDENT |
 
+### Data Integrity & Endianness
 
-Running the Simulation
-Start the Server:
-Bash
-./server 8080
+The project ensures cross-platform compatibility by converting multi-byte data (like port numbers) using:
 
+* `htons()` / `ntohs()` (Host to Network Short)
+* `htonl()` / `ntohl()` (Host to Network Long)
 
-Connect a Vehicle:
-Bash
-./client 127.0.0.1 8080
+---
 
+## 🛡️ Autonomous Safety Logic
 
-Initialize Telemetry:
-Inside the client terminal, type: set 44.42 26.10 50
-🔍 Technical Challenges & Solutions
-Challenge
-Solution
-Ghost Connections
-Implemented a Keep-Alive heartbeat; if no telemetry is sent for 10s, the server closes the FD.
-String Buffering
-Used memset and strncat to prevent buffer overflows and "garbage" characters in JSON parsing.
-Graceful Shutdown
-Handled SIGINT (Ctrl+C) to properly close sockets and prevent "Address already in use" (TIME_WAIT) errors.
+### 🚫 Speed Governor (Auto-Pilot)
 
-🛠️ Project Structure
+The client includes an autonomous safety callback. When a `WRN` (Warning) packet is received from the Authority:
 
-Plaintext
+1. It parses the new `speed_limit`.
+2. If `current_speed > speed_limit`, the vehicle logic **overwrites** the local speed variable to enforce a safe deceleration.
+3. The event is logged to the terminal to inform the operator.
+
+### 🗺️ Boundary Recovery
+
+If a vehicle hits the edge of the simulated environment (Status: `UNKNOWN`):
+
+* **Bumper Protocol:** The vehicle reverses its direction vector ( turn).
+* **State Rollback:** Reverts to the last known valid GPS coordinate to maintain simulation stability.
+
+---
+
+## 💻 Installation & Usage
+
+### Building
+
+Compilați fișierele folosind `gcc` pe un mediu Linux:
+
+```bash
+# Compile Server
+gcc server.c -o server -Wall
+
+# Compile Client
+gcc client.c -o client -Wall
+
+```
+
+### Execution
+
+1. **Start Server:** `./server 8080`
+2. **Launch Vehicle:** `./client 127.0.0.1 8080`
+3. **Initialize:** Type `set 44.43 26.10 60` in the client terminal to start movement.
+
+---
+
+## 🔍 Technical Challenges & Solutions
+
+* **Challenge:** CPU overhead from busy-waiting.
+* **Solution:** Switched to `select()` with a 1-second `timeval`, reducing CPU usage to nearly 0% during idle states.
 
 
-├── server.c         # Central Logic & Multiplexing
-├── client.c         # Vehicle Simulation & Autonomous Logic
-├── common.h         # Shared Constants & Protocol Definitions
-├── server_log.json  # Persistent audit trail of all movements
-└── Makefile         # Build automation
+* **Challenge:** "Address already in use" errors.
+* **Solution:** Implemented `setsockopt` with `SO_REUSEADDR` to allow immediate port recycling.
+
+
+* **Challenge:** Architecture differences in data representation.
+* **Solution:** Rigorous use of `uint32_t` types and network byte order functions to ensure compatibility.
+
+
+
+---
+
+*Project developed as a study of Linux Systems Programming and Network Protocols.*
+
+```
+
+***
+
+**Would you like me to ... add a `Makefile` script block to this documentation to make the build process easier for users?**
+
+```
