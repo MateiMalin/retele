@@ -1,10 +1,5 @@
-I understand. You want the complete, in-depth documentation provided in a clean, standard Markdown format that you can copy and paste directly into a `README.md` file for GitHub.
-
-Here is the raw Markdown content:
 
 ---
-
-```markdown
 # 🚗 Smart Traffic Management System (TMS)
 
 > **An advanced autonomous traffic monitoring and control system built using C Sockets and Linux I/O Multiplexing.**
@@ -54,8 +49,6 @@ The system utilizes a **Stateful Client-Server** model over the TCP/IP stack.
 To avoid the resource consumption of "one thread per client," this project implements the `select()` system call. This allows the application to monitor multiple file descriptors (network socket and `stdin`) simultaneously.
 
 
-
-```c
 // Core event loop structure
 FD_ZERO(&read_fds);
 FD_SET(socket_fd, &read_fds);
