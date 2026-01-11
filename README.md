@@ -150,9 +150,4 @@ gcc client.c -o client -Wall
 *Project developed as a study of Linux Systems Programming and Network Protocols.*
 
 ```
-
-***
-
-**Would you like me to ... add a `Makefile` script block to this documentation to make the build process easier for users?**
-
 ```
